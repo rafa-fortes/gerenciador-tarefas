@@ -1,10 +1,10 @@
 from fastapi import status
 from fastapi.testclient import TestClient
 
-from gerenciador_tarefas.gerenciador import (  # aqui eu importo as funções do gerenciado_tarefas.
-    TAREFAS,
-    app,
-)
+from gerenciador_tarefas.gerenciador import app, TAREFAS # aqui eu importo as funções do gerenciado_tarefas.
+    
+    
+
 
 
 # Definindo uma função de teste.
