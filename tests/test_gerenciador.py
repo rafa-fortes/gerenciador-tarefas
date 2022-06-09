@@ -1,26 +1,16 @@
 from fastapi import status
 from fastapi.testclient import TestClient
 
+from gerenciador_tarefas.gerenciador import TAREFAS, app
+
 # aqui eu importo as funções do gerenciado_tarefas.
-
-from gerenciador_tarefas.gerenciador import (
-    TAREFAS,  
-)
-
-from gerenciador_tarefas.gerenciador import app
 
 
 # Definindo uma função de teste.
 def test_quando_listar_tarefas_devo_ter_como_retorno_codigo_de_status_200():
-    cliente = TestClient(
-        app
-    )  # Aqui eu estou criando um cliente de teste com base nessa aplicação. 
-    resposta = cliente.get(
-        "/tarefas"
-    )  
-    assert (
-        resposta.status_code == status.HTTP_200_OK
-    )  # o assert ele vai checando essa expressão que eu passei aqui. 
+    cliente = TestClient(app)
+    resposta = cliente.get("/tarefas")
+    assert resposta.status_code == status.HTTP_200_OK
 
 
 def test_quando_listar_tarefas_formato_de_retorno_deve_ser_jason():
@@ -34,16 +24,12 @@ def test_quando_listar_tarefas_formato_de_retorno_deve_ser_jason():
 def test_quando_listar_tarefas_formato_de_retorno_deve_ser_uma_lista():
     cliente = TestClient(app)
     resposta = cliente.get("/tarefas")
-    assert isinstance(
-        resposta.json(), list
-    )  # Essa função isinstance ela verifica se aquilo é uma lista, 
-       # então eu to falando para ele pega a resposta transforma esse valor 
-       # que vai estar em um formato Json esse formato é um formato textual para podermos 
-       # transitar valores.
+    assert isinstance(resposta.json(), list)
 
 
+# adicionando uma tarefa na lista de TAREFAS da minha aplicação.
 def test_quando_listar_tarefas_formato_de_retorno_deve_possuir_id():
-    TAREFAS.append(  # adicionando uma tarefa na lista de TAREFAS da minha aplicação.
+    TAREFAS.append(
         {
             "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
             "titulo": "titulo 1",
@@ -51,15 +37,7 @@ def test_quando_listar_tarefas_formato_de_retorno_deve_possuir_id():
             "estado": "finalizado",
         }
     )
-    cliente = TestClient(
-        app
-    )  # criando um cliente p/ consumir a minha a aplicação.
-    resposta = cliente.get("/tarefas")  # acessando o recurso de tarefas.
-    assert (
-        "id" in resposta.json().pop()
-    )                                
-    TAREFAS.clear()  
-    
-    # limpando a lista de tarefas é importante sempre 
-    # limpar um recurso que foi modificado, nesse caso foi a tarefa, 
-    # para não influenciar nos outros testes.
+    cliente = TestClient(app)
+    resposta = cliente.get("/tarefas")
+    assert "id" in resposta.json().pop()
+    TAREFAS.clear()
