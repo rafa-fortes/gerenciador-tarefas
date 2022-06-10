@@ -88,3 +88,8 @@ def test_recurso_tarefas_deve_aceitar_o_verbo_post():
     cliente = TestClient(app)
     resposta = cliente.post("/tarefas")
     assert resposta.status_code != status.HTTP_405_METHOD_NOT_ALLOWED
+
+def test_quando_uma_tarefa_e_submetida_deve_possuir_um_titulo():
+    cliente = TestClient(app)
+    resposta = cliente.post("/tarefas", json={})
+    assert resposta.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
