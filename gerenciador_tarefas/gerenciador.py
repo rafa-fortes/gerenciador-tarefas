@@ -8,3 +8,7 @@ app = FastAPI()
 @app.get("/tarefas")
 def listar():
     return TAREFAS  # To retornando a TAREFAS.
+
+@app.post("/tarefas")
+def criar():
+    pass 

@@ -41,3 +41,8 @@ def test_quando_listar_tarefas_formato_de_retorno_deve_possuir_id():
     resposta = cliente.get("/tarefas")
     assert "id" in resposta.json().pop()
     TAREFAS.clear()
+
+def test_recurso_tarefas_deve_aceitar_o_verbo_post():
+    cliente = TestClient(app)
+    resposta = cliente.post("/tarefas")
+    assert resposta.status_code != status.HTTP_405_METHOD_NOT_ALLOWED
