@@ -98,3 +98,25 @@ def test_quando_uma_tarefa_e_submetida_deve_possuir_um_titulo():
     cliente = TestClient(app)
     resposta = cliente.post("/tarefas", json={})
     assert resposta.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+
+
+def test_titulo_da_tarefa_deve_conter_entre_3_e_50_caracteres():
+    cliente = TestClient(app)
+    resposta = cliente.post("/tarefas", json={"titulo": 2 * "*"})
+    assert resposta.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+    resposta = cliente.post("/tarefas", json={"titulo": 51 * "*"})
+    assert resposta.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+
+
+def test_quando_uma_terefa_e_submetida_deve_possuir_uma_descricao():
+    cliente = TestClient(app)
+    resposta = cliente.post("/tarefas", json={"titulo": "titulo"})
+    assert resposta.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+
+
+def test_descricao_da_tarefa_pode_conter_no_maximo_140_caracteres():
+    cliente = TestClient(app)
+    resposta = cliente.post(
+        "/tarefas", json={"titulo": "titulo", "descricao": "*" * 141}
+    )
+    assert resposta.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
