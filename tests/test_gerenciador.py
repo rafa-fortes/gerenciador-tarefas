@@ -120,3 +120,13 @@ def test_descricao_da_tarefa_pode_conter_no_maximo_140_caracteres():
         "/tarefas", json={"titulo": "titulo", "descricao": "*" * 141}
     )
     assert resposta.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+
+
+def test_quando_criar_uma_tarefa_a_mesma_deve_ser_retornada():
+    cliente = TestClient(app)
+    tarefa_esperada = {"titulo": "titulo", "descricao": "descricao"}
+    resposta = cliente.post("/tarefas", json=tarefa_esperada)
+    tarefa_criada = resposta.json()
+    assert tarefa_criada["titulo"] == tarefa_esperada["titulo"]
+    assert tarefa_criada["descricao"] == tarefa_esperada["descricao"]
+    TAREFAS.clear()

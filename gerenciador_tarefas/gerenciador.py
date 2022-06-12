@@ -19,4 +19,4 @@ def listar():
 
 @app.post("/tarefas")
 def criar(tarefa: Tarefa):
-    pass
+    return tarefa
